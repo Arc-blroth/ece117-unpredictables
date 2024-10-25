@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "single-packet-attack"
+version = "0.1.0"
+description = ""
+authors = ["Arc-blroth <45273859+Arc-blroth@users.noreply.github.com>"]
+license = "ARR"
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+h2spacex = "^1.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
