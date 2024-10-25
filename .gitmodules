@@ -1,0 +1,3 @@
+[submodule "poc/crack-js-prng/v8-randomness-predictor"]
+	path = poc/crack-js-prng/v8-randomness-predictor
+	url = git@github.com:PwnFunction/v8-randomness-predictor.git
