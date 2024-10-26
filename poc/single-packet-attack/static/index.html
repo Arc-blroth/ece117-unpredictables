@@ -1,22 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Powerball Lottery Game</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Powerball Lottery</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Powerball Lottery Game</h1>
-        <p>Guess the Powerball number! Can you beat the odds?</p>
-        <div class="odds">
-            <p><strong>Odds of winning Powerball:</strong> 1 in 292.2 million</p>
-        </div>
-        <input type="number" id="userGuess" placeholder="Enter your guess" min="1" max="999999999">
-        <button onclick="makeGuess()">Submit Guess</button>
-        <p id="result"></p>
+  <div class="container">
+    <h1>Powerball Lottery</h1>
+
+    <div class="guess-section">
+      <h2>Make Your Guess</h2>
+      <div class="guess-inputs">
+        <input type="number" id="guess1" min="1" max="69" class="ball-input">
+        <input type="number" id="guess2" min="1" max="69" class="ball-input">
+        <input type="number" id="guess3" min="1" max="69" class="ball-input">
+        <input type="number" id="guess4" min="1" max="69" class="ball-input">
+        <input type="number" id="guess5" min="1" max="69" class="ball-input">
+      </div>
+      <button id="submitGuess">Submit Guess</button>
+      <p id="message"></p>
     </div>
-    <script src="script.js"></script>
+
+    <div class="winning-section">
+      <h2>Winning Numbers</h2>
+      <div class="winning-numbers" id="winningNumbers">
+        <span class="ball">???</span>
+        <span class="ball">???</span>
+        <span class="ball">???</span>
+        <span class="ball">???</span>
+        <span class="ball">???</span>
+      </div>
+      <button id="restartButton">Restart</button>
+    </div>
+
+    <p>Odds of Winning Powerball: 1 in 292.2 million</p>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>

@@ -1,47 +1,78 @@
 body {
   font-family: Arial, sans-serif;
-  text-align: center;
-  background-image: url('background.jpg'); /* Replace with the path to your image */
-  background-size: cover;
-  background-position: center;
+  background-color: #f4f4f4;
   margin: 0;
-  padding: 0;
+  padding: 20px;
+  text-align: center;
 }
 
 .container {
-  margin: 100px auto;
-  width: 350px;
+  width: 60%;
+  margin: 0 auto;
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+  background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-  color: #ff3333; /* Powerball Red */
+  color: #d32f2f;
+  margin-bottom: 20px;
 }
 
-.odds p {
-  font-size: 14px;
-  color: #333;
+.guess-section, .winning-section {
+  margin-bottom: 20px;
+}
+
+.guess-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.ball-input {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  font-size: 24px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
 }
 
 button {
-  background-color: #0066cc; /* Powerball Blue */
-  color: white;
-  padding: 10px;
+  padding: 10px 20px;
+  font-size: 18px;
+  margin-top: 10px;
+  background-color: #d32f2f;
+  color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #005bb5;
+  background-color: #b71c1c;
 }
 
-#result {
-  margin-top: 20px;
+.winning-numbers {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.ball {
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+  text-align: center;
+  line-height: 50px;
+  border-radius: 50%;
+  background-color: #d32f2f;
+  color: white;
+  font-size: 24px;
+}
+
+#message {
   font-size: 18px;
-  font-weight: bold;
-  color: #333;
+  color: green;
 }
