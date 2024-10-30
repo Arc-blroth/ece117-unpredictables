@@ -2,6 +2,22 @@ import z3
 import struct
 import math
 
+# NOTE: random cache size is 64 and it is read out LIFO. Therefore, output random numbers aren't all contiguous, with a cache refill every 64 numbers
+# If you have a range of generated numbers of length k, then you have a k/64 probability of the predictor failing
+  
+def xorshift(s0: int, s1: int):
+# XORshift128+ algorithm
+  se_s1 = s0
+  se_s0 = s1
+  s0 = se_s0
+  se_s1 ^= (se_s1 << 23) % (1 << 64)
+  se_s1 ^= ((se_s1 % (1 << 64)) >> 17) # Logical shift instead of Arthmetric shift
+  se_s1 ^= se_s0
+  se_s1 ^= ((se_s0 % (1 << 64)) >> 26)
+  s1 = se_s1
+
+  return s0, s1
+
 class Predictor:
   def __init__(self):
     self._input_type = ""
@@ -102,3 +118,7 @@ class Predictor:
     next_double = self.predict_next_double()
 
     return math.floor(next_double * N)
+  
+  def get_states(self):
+  # return computed initial states if SAT
+    return (self._states["_state_0"], self._states["_state_1"])

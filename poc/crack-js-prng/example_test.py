@@ -16,7 +16,7 @@ P.feed_scaled_floors(input_data,N)
 if (P.check_sat()):
   print("SAT")
   print(P.predict_next_scaled_floor(N))
+  #print(P.predict_next_double())
   print(f"True value: {next_value}")
 else:
   print("UNSAT")
-
