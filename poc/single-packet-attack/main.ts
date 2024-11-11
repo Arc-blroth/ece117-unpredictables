@@ -1,6 +1,7 @@
 import { serveDir } from "@std/http/file-server";
 
-let targetNumber = Math.floor(Math.random() * 1000000000) + 1; // Initial random number to guess
+// Function to generate a random target number
+const generateRandomNumber = () => Math.floor(Math.random() * 1000000000) + 1;
 
 Deno.serve(
   {
@@ -16,18 +17,17 @@ Deno.serve(
       const formData = new URLSearchParams(await req.text());
       const userGuess = parseInt(formData.get("userGuess") || "0", 10);
 
+      // Generate a new random number for each guess
+      const targetNumber = generateRandomNumber();
+
       // Check if the guess is correct
       const correct = userGuess === targetNumber;
 
-      if (!correct) {
-        // Generate a new random number if the guess was incorrect
-        targetNumber = Math.floor(Math.random() * 1000000000) + 1;
-      }
-
+      // Return the feedback and the new random number for the next guess
       return new Response(
         JSON.stringify({
           correct,
-          correctNumber: correct ? undefined : targetNumber, // Show number if incorrect
+          correctNumber: correct ? undefined : targetNumber, // Show the number if incorrect
         }),
         { headers: { "Content-Type": "application/json" } }
       );
