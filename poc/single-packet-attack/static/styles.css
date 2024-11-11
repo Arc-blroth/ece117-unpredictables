@@ -1,82 +1,107 @@
-/* Basic reset */
-* {
+/* Global Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(to right, #ff7e5f, #feb47b); /* Vibrant gradient background */
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: Arial, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background-color: #f3f4f6;
+  height: 100vh;
 }
 
 .container {
   text-align: center;
-  padding: 20px;
-  max-width: 400px;
-  width: 100%;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 300px;
 }
 
 h1 {
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 10px;
+  font-size: 2.5rem;
+  color: #ff6347;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 p {
-  font-size: 16px;
-  color: #666;
-  margin-bottom: 20px;
+  font-size: 1.1rem;
+  color: #333;
+  margin: 20px 0;
 }
 
-input[type="number"] {
-  width: calc(100% - 20px);
+input {
   padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  outline: none;
-  transition: border-color 0.2s;
+  font-size: 1rem;
+  width: 100%;
+  border: 2px solid #ff6347;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
 }
 
-input[type="number"]:focus {
-  border-color: #007bff;
+input:focus {
+  border-color: #ff8c00;
+  outline: none;
+  box-shadow: 0 0 10px rgba(255, 140, 0, 0.6);
 }
 
 button {
-  margin-top: 15px;
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  color: #fff;
-  background-color: #007bff;
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  background-color: #ff6347;
+  color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #ff8c00;
+}
+
+button:active {
+  transform: scale(0.98);
 }
 
 #feedback {
-  margin-top: 15px;
-  font-size: 16px;
+  margin-top: 20px;
+  font-size: 1.2rem;
   font-weight: bold;
 }
 
-#feedback.correct {
-  color: #28a745;
+.correct {
+  color: green;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-#feedback.incorrect {
-  color: #dc3545;
+.incorrect {
+  color: red;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.correct::before {
+  content: "✅ ";
+}
+
+.incorrect::before {
+  content: "❌ ";
+}
+
+/* Animation for the feedback */
+@keyframes feedbackAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#feedback {
+  animation: feedbackAnimation 0.5s ease-in-out;
 }
