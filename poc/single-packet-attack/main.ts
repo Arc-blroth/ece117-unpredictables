@@ -3,6 +3,9 @@ import { serveDir } from "@std/http/file-server";
 // Function to generate a random target number
 const generateRandomNumber = () => Math.floor(Math.random() * 1000000000) + 1;
 
+// for debugging reconstructions of the single-packet-attack
+let seq: number = 0;
+
 Deno.serve(
   {
     port: 3443,
@@ -26,6 +29,7 @@ Deno.serve(
       // Return the feedback and the new random number for the next guess
       return new Response(
         JSON.stringify({
+          seq: seq++,
           correct,
           correctNumber: correct ? undefined : targetNumber, // Show the number if incorrect
         }),
