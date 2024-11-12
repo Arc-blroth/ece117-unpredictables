@@ -1,0 +1,160 @@
++ Connected to: ece117.bulr.boo:443 --> 172.23.104.127:43638
++ TLS connection established
++ H2 connection preface sent
++ Client initial SETTINGS frame sent: 
+// Client SETTINGS //
+{'SETTINGS_HEADER_TABLE_SIZE': {'id': 1, 'value': 4096}, 'SETTINGS_ENABLE_PUSH': {'id': 2, 'value': 0}, 'SETTINGS_MAX_CONCURRENT_STREAMS': {'id': 3, 'value': 100}, 'SETTINGS_INITIAL_WINDOW_SIZE': {'id': 4, 'value': 65535}, 'SETTINGS_MAX_FRAME_SIZE': {'id': 5, 'value': 16384}, 'SETTINGS_MAX_HEADER_LIST_SIZE': {'id': 6, 'value': None}}
+None
+* Server sent Settings frame with following values:
+// Server SETTINGS //
+[<H2Setting  id=Max concurrent streams value=100 |>, <H2Setting  id=Initial window size value=65536 |>, <H2Setting  id=Max frame size value=16777215 |>]
+None
++ Client sent ACK for server SETTINGS frame
+* Server sent WINDOW UPDATE frame with win_increase_size of: 2147418112
+* Server sent ACK for client SETTINGS frame
+* Server sent WINDOW UPDATE frame with win_increase_size of: 65536
+* Server sent WINDOW UPDATE frame with win_increase_size of: 18
+* Server sent WINDOW UPDATE frame with win_increase_size of: 65536
+* Server sent WINDOW UPDATE frame with win_increase_size of: 17
+* Server sent WINDOW UPDATE frame with win_increase_size of: 65536
+* Server sent WINDOW UPDATE frame with win_increase_size of: 18
+* Server sent WINDOW UPDATE frame with win_increase_size of: 65536
+* Server sent WINDOW UPDATE frame with win_increase_size of: 18
+* Server sent WINDOW UPDATE frame with win_increase_size of: 65536
+* Server sent WINDOW UPDATE frame with win_increase_size of: 18
+* Server sent WINDOW UPDATE frame with win_increase_size of: 65536
+* Server sent WINDOW UPDATE frame with win_increase_size of: 18
+* Server sent WINDOW UPDATE frame with win_increase_size of: 65536
+* Server sent WINDOW UPDATE frame with win_increase_size of: 18
+* Server sent WINDOW UPDATE frame with win_increase_size of: 65536
+* Server sent WINDOW UPDATE frame with win_increase_size of: 17
+* Server sent ACK for PING frame
+#-    Stream ID: 17   -#
+-Headers-
+:status 200
+date: Tue, 12 Nov 2024 00:05:59 GMT
+content-type: application/json
+content-length: 52
+vary: Accept-Encoding
+cf-cache-status: DYNAMIC
+report-to: {"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=9TFmaCz6NzeTkduLKKn5jGJsqIl3NupdXtzzrtSYQzK5EQAgPvBgsI7%2Fd91f5UMQPBjUNAKzrZr33xXVjN83MexYlfRCvoCb80yG6KvNZpD7VNeq%2BqxV%2Bvfkppc4G5X6bdk%3D"}],"group":"cf-nel","max_age":604800}
+nel: {"success_fraction":0,"report_to":"cf-nel","max_age":604800}
+server: cloudflare
+cf-ray: 8e124607fdab2eae-LAX
+alt-svc: h3=":443"; ma=86400
+server-timing: cfL4;desc="?proto=TCP&rtt=10774&sent=25&recv=10&lost=0&retrans=1&sent_bytes=4036&recv_bytes=1593&delivery_rate=890280&cwnd=250&unsent_bytes=0&cid=8cc6af684327d9e1&ts=227&x=0"
+-Body-
+b'{"seq":10,"correct":false,"correctNumber":777820521}'
+#-    Stream ID: 13   -#
+-Headers-
+:status 200
+date: Tue, 12 Nov 2024 00:05:59 GMT
+content-type: application/json
+content-length: 51
+vary: Accept-Encoding
+cf-cache-status: DYNAMIC
+report-to: {"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=tPjwq2TsI8AqRgUgBC28eVT8uUSoYtZZAWRtfXawKrWYYrqPkEr5s6Eg59Cp7FNfRLN9NDiNLOuIWgneXsDdDBbsk22ZjFci6ab%2F4aSiZFuDqdI9drqQjhUlESsmVFTQm8Q%3D"}],"group":"cf-nel","max_age":604800}
+nel: {"success_fraction":0,"report_to":"cf-nel","max_age":604800}
+server: cloudflare
+cf-ray: 8e124607fda92eae-LAX
+alt-svc: h3=":443"; ma=86400
+server-timing: cfL4;desc="?proto=TCP&rtt=10774&sent=28&recv=10&lost=0&retrans=1&sent_bytes=4731&recv_bytes=1593&delivery_rate=890280&cwnd=250&unsent_bytes=0&cid=8cc6af684327d9e1&ts=228&x=0"
+-Body-
+b'{"seq":7,"correct":false,"correctNumber":167547882}'
+#-    Stream ID: 7   -#
+-Headers-
+:status 200
+date: Tue, 12 Nov 2024 00:05:59 GMT
+content-type: application/json
+content-length: 51
+vary: Accept-Encoding
+cf-cache-status: DYNAMIC
+report-to: {"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=uL4jIXikuGVzotEipLq5ck6wXkhE6bP0rigxXVhJsVsXjfnbKfUt2E3ULE53bnIrJPI3re6kSVZy%2F0zzBxl8wQWdGPIaCLyrMkyGZhhWqTLpQYElB9B%2FkhC8N3qIpM9DCXI%3D"}],"group":"cf-nel","max_age":604800}
+nel: {"success_fraction":0,"report_to":"cf-nel","max_age":604800}
+server: cloudflare
+cf-ray: 8e124607fda52eae-LAX
+alt-svc: h3=":443"; ma=86400
+server-timing: cfL4;desc="?proto=TCP&rtt=10774&sent=31&recv=10&lost=0&retrans=1&sent_bytes=5246&recv_bytes=1593&delivery_rate=890280&cwnd=250&unsent_bytes=0&cid=8cc6af684327d9e1&ts=229&x=0"
+-Body-
+b'{"seq":9,"correct":false,"correctNumber":157627537}'
+#-    Stream ID: 5   -#
+-Headers-
+:status 200
+date: Tue, 12 Nov 2024 00:05:59 GMT
+content-type: application/json
+content-length: 52
+vary: Accept-Encoding
+cf-cache-status: DYNAMIC
+report-to: {"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=Bu4whEbEs%2FU%2FSqjkc05xqAsBpPKd1OLjvONS4GZSick%2B5FzhyUEfNlmTSTuXbuJf9%2BRh603EBNZYWSoaDSWvNF1dgQGR6eNm0SGEBUuOJ07lqkrM7juyOWTfjT4Es3%2FkuyM%3D"}],"group":"cf-nel","max_age":604800}
+nel: {"success_fraction":0,"report_to":"cf-nel","max_age":604800}
+server: cloudflare
+cf-ray: 8e124607fda32eae-LAX
+alt-svc: h3=":443"; ma=86400
+server-timing: cfL4;desc="?proto=TCP&rtt=10774&sent=34&recv=10&lost=0&retrans=1&sent_bytes=5761&recv_bytes=1593&delivery_rate=890280&cwnd=250&unsent_bytes=0&cid=8cc6af684327d9e1&ts=230&x=0"
+-Body-
+b'{"seq":14,"correct":false,"correctNumber":850814054}'
+#-    Stream ID: 11   -#
+-Headers-
+:status 200
+date: Tue, 12 Nov 2024 00:05:59 GMT
+content-type: application/json
+content-length: 51
+vary: Accept-Encoding
+cf-cache-status: DYNAMIC
+report-to: {"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=yoNrvqh7JTAtBn8abpCXWh%2BxNRRzZpAE6NZMvwY6l2K9gBbEwLP4x%2FdUO0pCspuoH8ePVt2k2UqWPIFYndyPOY1hAhV9flHTHKmboc%2FjTW%2F0LYHsj6%2F0DtJvGr0vHPN%2Ft%2B4%3D"}],"group":"cf-nel","max_age":604800}
+nel: {"success_fraction":0,"report_to":"cf-nel","max_age":604800}
+server: cloudflare
+cf-ray: 8e124607fda82eae-LAX
+alt-svc: h3=":443"; ma=86400
+server-timing: cfL4;desc="?proto=TCP&rtt=10774&sent=37&recv=10&lost=0&retrans=1&sent_bytes=6282&recv_bytes=1593&delivery_rate=890280&cwnd=250&unsent_bytes=0&cid=8cc6af684327d9e1&ts=230&x=0"
+-Body-
+b'{"seq":12,"correct":false,"correctNumber":90023558}'
+#-    Stream ID: 15   -#
+-Headers-
+:status 200
+date: Tue, 12 Nov 2024 00:05:59 GMT
+content-type: application/json
+content-length: 52
+vary: Accept-Encoding
+cf-cache-status: DYNAMIC
+report-to: {"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=nrCsBfG2zlTY8l7gQUxA7D%2B0Ks0sx4S9Qjs8Fgcsn65xSy%2FqEvtRwfQ5YveW7s%2BPu0U83iXmZ%2BVddLV1rHk%2FQ%2BSx6JKbsp9AX74ifu6Dr%2BpJ4%2BsQEY2bcksIZhy3ESrwljU%3D"}],"group":"cf-nel","max_age":604800}
+nel: {"success_fraction":0,"report_to":"cf-nel","max_age":604800}
+server: cloudflare
+cf-ray: 8e124607fdaa2eae-LAX
+alt-svc: h3=":443"; ma=86400
+server-timing: cfL4;desc="?proto=TCP&rtt=10774&sent=40&recv=10&lost=0&retrans=1&sent_bytes=6802&recv_bytes=1593&delivery_rate=890280&cwnd=250&unsent_bytes=0&cid=8cc6af684327d9e1&ts=231&x=0"
+-Body-
+b'{"seq":11,"correct":false,"correctNumber":519225052}'
+#-    Stream ID: 9   -#
+-Headers-
+:status 200
+date: Tue, 12 Nov 2024 00:05:59 GMT
+content-type: application/json
+content-length: 52
+vary: Accept-Encoding
+cf-cache-status: DYNAMIC
+report-to: {"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=8LOOhz9nzaO7iqNlEbVTVA3sdEIRbCbWh4VzUxjN50ve0UCpuZBsR3%2F2S4rshdAPFignm3k1d3LvnGyloOTDx10rt9FcxNvmhtfd2nTpMujkiLYQbxewtFN8GhuOUo6qhs0%3D"}],"group":"cf-nel","max_age":604800}
+nel: {"success_fraction":0,"report_to":"cf-nel","max_age":604800}
+server: cloudflare
+cf-ray: 8e124607fda72eae-LAX
+alt-svc: h3=":443"; ma=86400
+server-timing: cfL4;desc="?proto=TCP&rtt=7525&sent=43&recv=15&lost=0&retrans=1&sent_bytes=7324&recv_bytes=1593&delivery_rate=5015818&cwnd=250&unsent_bytes=0&cid=8cc6af684327d9e1&ts=237&x=0"
+-Body-
+b'{"seq":13,"correct":false,"correctNumber":354029511}'
+#-    Stream ID: 3   -#
+-Headers-
+:status 200
+date: Tue, 12 Nov 2024 00:05:59 GMT
+content-type: application/json
+content-length: 51
+vary: Accept-Encoding
+cf-cache-status: DYNAMIC
+report-to: {"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=lUEVncVGDf1IvBN2WaJZ%2FaMjoEmuTHyyblQXqqKK5%2BaGUNWHiTodwfL996sr%2BmproGQgd8hhS1fIPVBJ4Cqrv4hAmjLzDqZSDUEoOTU3JBOeO6eu545Apr3w5YPR%2FvGYmDM%3D"}],"group":"cf-nel","max_age":604800}
+nel: {"success_fraction":0,"report_to":"cf-nel","max_age":604800}
+server: cloudflare
+cf-ray: 8e124607fda02eae-LAX
+alt-svc: h3=":443"; ma=86400
+server-timing: cfL4;desc="?proto=TCP&rtt=7525&sent=46&recv=15&lost=0&retrans=1&sent_bytes=7836&recv_bytes=1593&delivery_rate=5015818&cwnd=250&unsent_bytes=0&cid=8cc6af684327d9e1&ts=238&x=0"
+-Body-
+b'{"seq":8,"correct":false,"correctNumber":620696864}'
+- Connection closed
