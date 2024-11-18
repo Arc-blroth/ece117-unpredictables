@@ -1,12 +1,14 @@
 import z3
 import struct
 import math
+from typing import Union,Optional
+from enum import Enum
 
 # NOTE: random cache size is 64 and it is read out LIFO. Therefore, output random numbers aren't all contiguous, with a cache refill every 64 numbers
 # If you have a range of generated numbers of length k, then you have a k/64 probability of the predictor failing
-  
-def xorshift(s0: int, s1: int):
+
 # XORshift128+ algorithm
+def xorshift(s0: int, s1: int) -> tuple[int,int]:
   se_s1 = s0
   se_s0 = s1
   s0 = se_s0
@@ -18,15 +20,39 @@ def xorshift(s0: int, s1: int):
 
   return s0, s1
 
+def mantissa_from_state(s0: int) -> int:
+  return s0 >> 12
+
+def double_from_state(s0: int) -> float:
+  mantissa = mantissa_from_state(s0)
+  u_long_long_64 = mantissa | 0x3FF0000000000000
+  float_64 = struct.pack("<Q", u_long_long_64)
+  double = struct.unpack("d", float_64)[0]
+
+  double -= 1
+
+  return double
+
+def scaled_floor_from_state(s0: int, N: int) -> int:
+  doub = scaled_floor_from_state(s0)
+
+  return math.floor(doub * N)
+
 class Predictor:
   def __init__(self):
     self._input_type = ""
     self._state_0, self._state_1 = z3.BitVecs("_state_0 _state_1", 64)
     self._solver = z3.Solver()
     self._states = {}
+
+  def reset(self):
+    self._input_type = ""
+    self._state_0, self._state_1 = z3.BitVecs("_state_0 _state_1", 64)
+    self._solver.reset()
+    self._states = {}
   
-  def _advance_xorshift(self):
   # internal representation of xorshift state
+  def _advance_xorshift(self):
     se_s1 = self._state_0
     se_s0 = self._state_1
     self._state_0 = se_s0
@@ -36,14 +62,14 @@ class Predictor:
     se_s1 ^= z3.LShR(se_s0, 26)
     self._state_1 = se_s1
 
-  def feed_mantissas(self, mantissas: list[int]):
   # feed mantissa values (52-bit unsigneds) to z3 solver
+  def feed_mantissas(self, mantissas: list[int]):
     for mantissa in mantissas[::-1]:
       self._advance_xorshift()
       self._solver.add(int(mantissa) == z3.LShR(self._state_0, 12))
 
-  def feed_raw_doubles(self, doubles: list[float]):
   # feed Math.random() double outputs to z3 solver
+  def feed_raw_doubles(self, doubles: list[float]):
     mantissas = []
     for doub in doubles:
       float_64 = struct.pack("d", doub + 1)
@@ -54,17 +80,17 @@ class Predictor:
 
       mantissas.append(mantissa)
     self.feed_mantissas(mantissas)
-
-  def feed_mantissa_bounds(self, bounds: list[tuple[int,int]]):
+  
   # feed (lower,upper) bound pairs on the mantissa to z3 solver. all bounds are unsigned 52-bit integers
+  def feed_mantissa_bounds(self, bounds: list[tuple[int,int]]):
     for bound in bounds[::-1]:
       self._advance_xorshift()
       mantissa_low, mantissa_high = bound
       self._solver.add(z3.LShR(self._state_0,12) >= mantissa_low)
       self._solver.add(z3.LShR(self._state_0,12) <= mantissa_high)
 
-  def feed_scaled_floors(self, nums: list[int], N: int):
   # feed numbers (ints) of the form Math.floor(Math.random()*N) to the solver
+  def feed_scaled_floors(self, nums: list[int], N: int):
     bounds = []
     for num in nums:
       low_bound = (num) / N
@@ -82,43 +108,147 @@ class Predictor:
       bounds.append((mantissa_low,mantissa_high))
     self.feed_mantissa_bounds(bounds)
 
-  def check_sat(self) -> bool:
   # determine if model is satisfiable
+  def check_sat(self) -> bool:
     return self._solver.check() == z3.sat
   
+  # internal method to solve the internal model  
   def _model(self):
-  # internal method to solve the internal model
     model = self._solver.model()
     self._states = {}
     for state in model.decls():
       self._states[state.__str__()] = model[state]
 
-  def predict_next_mantissa(self) -> int:
   # predict the next mantissa outputted by Math.random()
+  def predict_next_mantissa(self) -> int:
     self._model()
 
     state0 = self._states["_state_0"].as_long()
-    return (state0 >> 12)    
 
-  def predict_next_double(self) -> float:
+    return mantissa_from_state(state0)
+
   # predict the next double outputted by Math.random()
-    mantissa = self.predict_next_mantissa()
+  def predict_next_double(self) -> float:
+    self._model()
 
-    u_long_long_64 = mantissa | 0x3FF0000000000000
+    state0 = self._states["_state_0"].as_long()
 
-    float_64 = struct.pack("<Q", u_long_long_64)
-    next_double = struct.unpack("d", float_64)[0]
-
-    next_double -= 1
-
-    return next_double
-
-  def predict_next_scaled_floor(self, N: int) -> int:
-  # predict the next member of the sequence Math.floor(Math.random() * N)
-    next_double = self.predict_next_double()
-
-    return math.floor(next_double * N)
+    return double_from_state(state0)
   
-  def get_states(self):
-  # return computed initial states if SAT
-    return (self._states["_state_0"], self._states["_state_1"])
+  # predict the next member of the sequence Math.floor(Math.random() * N)
+  def predict_next_scaled_floor(self, N: int) -> int:
+    self._model()
+
+    state0 = self._states["_state_0"].as_long()
+
+    return scaled_floor_from_state(state0)
+  
+  # return computed initial states if SAT  
+  def get_states(self) -> tuple[int,int]:
+    if (self.check_sat()):
+      self._model()
+      return (self._states["_state_0"].as_long(), self._states["_state_1"].as_long())
+    else:
+      raise Exception("Model is not satisfiable!")
+
+class InputType(Enum):
+  RAW = 1
+  SCALED = 2
+
+class RandomModel:
+  def __init__(self):
+    self.predictor = Predictor()
+    self.current_state = None
+    self.random_cache = []
+    self.current_pos = 0
+  
+  # fill the random cache completely
+  # self.current_state is the most recent state generated
+  def fill_cache(self, initial_state: Optional[tuple[int,int]] = None):
+    if self.current_pos == 0:
+      if initial_state is None:
+        raise ValueError("Random cache is empty and no initial state is given.")
+      self.random_cache.append(initial_state)
+      self.current_pos += 1
+
+    for i in range(self.current_pos,64):
+      s0, s1 = self.random_cache[i-1]
+      new_states = xorshift(s0, s1)
+      self.current_state = new_states
+      self.random_cache.append(new_states)
+      self.current_pos += 1
+  
+  # return the next random number and refill the cache if needed
+  def _get_rand(self) -> tuple[int,int]:
+    if self.current_pos == 0:
+      self.fill_cache(initial_state=self.current_state)
+    
+    self.current_pos -= 1
+    return self.random_cache.pop()
+  
+  # return the next output from Math.random()
+  def get_next(self, input_type: InputType) -> Union[int,float]:
+    next_rand = self._get_rand()[0]
+
+    match input_type:
+      case InputType.RAW:
+        return double_from_state(next_rand)
+      case InputType.SCALED:
+        return scaled_floor_from_state(next_rand)
+  
+  # test if the cache has been "refilled" within the random samples provided
+  def _test_for_refill(self, sample: list[int], input_type: InputType) -> bool:
+    self.predictor.reset()
+    match input_type:
+      case InputType.RAW:
+        self.predictor.feed_raw_doubles(sample)
+      case InputType.SCALED:
+        self.predictor.feed_scaled_floors(sample)
+        
+    # model is not satisfiable if cache has been refilled due to its LIFO nature
+    return not self.predictor.check_sat()
+  
+  # provide an input of at least 65 samples to initialize the Random Number model
+  # may fail 4/64 times if the refill happens on the first 4 samples
+  def input_samples(self, sample: list[Union[int,float]], input_type: InputType):
+    assert len(sample) >= 65, "Sample length must be at least 65 to gain necessary information"
+
+    for i in range(1,65):
+      # try increasingly large ranges of samples
+      needs_refill = self._test_for_refill(sample[:i], input_type)
+
+      # we now know when the refill ocurred
+      if needs_refill:
+        valid_samples = sample[:i-1]
+        
+        self.predictor.reset()
+        match input_type:
+          case InputType.RAW:
+            self.predictor.feed_raw_doubles(valid_samples)
+          case InputType.SCALED:
+            self.predictor.feed_scaled_floors(valid_samples)
+        
+        s0_prev, s1_prev = self.predictor.get_states()
+        
+        # determine the oldest state in the previous cache as a reference point, fill cache based on this state
+        oldest_state = xorshift(s0_prev, s1_prev)
+
+        self.fill_cache(initial_state=oldest_state)
+
+        # skip all the random numbers that have been generated in this cache and refill again
+        for r in range(64):
+          _ = self._get_rand()
+        
+        # step forward for all the remaining random numbers in our sample
+        for r in range(i,len(sample)):
+          _ = self._get_rand()
+        
+        break
+    
+
+
+
+
+
+
+  
