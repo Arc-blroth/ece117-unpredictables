@@ -34,7 +34,7 @@ def double_from_state(s0: int) -> float:
   return double
 
 def scaled_floor_from_state(s0: int, N: int) -> int:
-  doub = scaled_floor_from_state(s0)
+  doub = double_from_state(s0)
 
   return math.floor(doub * N)
 
@@ -141,7 +141,7 @@ class Predictor:
 
     state0 = self._states["_state_0"].as_long()
 
-    return scaled_floor_from_state(state0)
+    return scaled_floor_from_state(state0, N)
   
   # return computed initial states if SAT  
   def get_states(self) -> tuple[int,int]:
@@ -187,68 +187,73 @@ class RandomModel:
     return self.random_cache.pop()
   
   # return the next output from Math.random()
-  def get_next(self, input_type: InputType) -> Union[int,float]:
+  def get_next(self, input_type: InputType, N: int = 0) -> Union[int,float]:
     next_rand = self._get_rand()[0]
 
     match input_type:
       case InputType.RAW:
         return double_from_state(next_rand)
       case InputType.SCALED:
-        return scaled_floor_from_state(next_rand)
+        if N == 0:
+          raise ValueError("Didn't provide a scaling factor")
+        return scaled_floor_from_state(next_rand, N)
   
   # test if the cache has been "refilled" within the random samples provided
-  def _test_for_refill(self, sample: list[int], input_type: InputType) -> bool:
+  def _test_for_refill(self, sample: list[int], input_type: InputType, N: int = 0) -> bool:
     self.predictor.reset()
     match input_type:
       case InputType.RAW:
         self.predictor.feed_raw_doubles(sample)
       case InputType.SCALED:
-        self.predictor.feed_scaled_floors(sample)
+        if N == 0:
+          raise ValueError("Didn't provide a scaling factor")
+        self.predictor.feed_scaled_floors(sample, N)
         
     # model is not satisfiable if cache has been refilled due to its LIFO nature
     return not self.predictor.check_sat()
   
   # provide an input of at least 65 samples to initialize the Random Number model
-  # may fail 4/64 times if the refill happens on the first 4 samples
-  def input_samples(self, sample: list[Union[int,float]], input_type: InputType):
+  # if refill occurs on earlier samples, behavior may be incorrect (approximately 5/64 chance)
+  def input_samples(self, sample: list[Union[int,float]], input_type: InputType, N: int = 0):
     assert len(sample) >= 65, "Sample length must be at least 65 to gain necessary information"
 
-    for i in range(1,65):
-      # try increasingly large ranges of samples
-      needs_refill = self._test_for_refill(sample[:i], input_type)
+    # binary search to find the find the point where cache refill occurs
+    low = 1
+    high = 64
 
-      # we now know when the refill ocurred
+    while (high > low + 1):
+      mid = (low + high) // 2
+      needs_refill = self._test_for_refill(sample[:mid], input_type, N)
+
+      # we have an upper bound on where cache refill occurs
       if needs_refill:
-        valid_samples = sample[:i-1]
-        
-        self.predictor.reset()
-        match input_type:
-          case InputType.RAW:
-            self.predictor.feed_raw_doubles(valid_samples)
-          case InputType.SCALED:
-            self.predictor.feed_scaled_floors(valid_samples)
-        
-        s0_prev, s1_prev = self.predictor.get_states()
-        
-        # determine the oldest state in the previous cache as a reference point, fill cache based on this state
-        oldest_state = xorshift(s0_prev, s1_prev)
+        high = mid
+      # we have a lower bound on where cache refill occurs
+      else:
+        low = mid
 
-        self.fill_cache(initial_state=oldest_state)
-
-        # skip all the random numbers that have been generated in this cache and refill again
-        for r in range(64):
-          _ = self._get_rand()
-        
-        # step forward for all the remaining random numbers in our sample
-        for r in range(i,len(sample)):
-          _ = self._get_rand()
-        
-        break
+    # we now know when the refill ocurred
+    valid_samples = sample[:low]
+    self.predictor.reset()
+    match input_type:
+      case InputType.RAW:
+        self.predictor.feed_raw_doubles(valid_samples)
+      case InputType.SCALED:
+        if N == 0:
+          raise ValueError("Didn't provide a scaling factor")
+        self.predictor.feed_scaled_floors(valid_samples, N)
     
+    s0_prev, s1_prev = self.predictor.get_states()
+    
+    # determine the oldest state in the previous cache as a reference point, fill cache based on this state
+    oldest_state = xorshift(s0_prev, s1_prev)
 
+    self.fill_cache(initial_state=oldest_state)
 
-
-
-
-
-  
+    # skip all the random numbers that have been generated in this cache and refill again
+    for r in range(64):
+      _ = self._get_rand()
+    
+    # step forward for all the remaining random numbers in our sample
+    for r in range(high,len(sample)):
+      _ = self._get_rand()
