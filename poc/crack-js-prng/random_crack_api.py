@@ -158,33 +158,33 @@ class InputType(Enum):
 class RandomModel:
   def __init__(self):
     self.predictor = Predictor()
-    self.current_state = None
-    self.random_cache = []
-    self.current_pos = 0
+    self._current_state = None
+    self._random_cache = []
+    self._current_pos = 0
   
   # fill the random cache completely
-  # self.current_state is the most recent state generated
+  # self._current_state is the most recent state generated
   def fill_cache(self, initial_state: Optional[tuple[int,int]] = None):
-    if self.current_pos == 0:
+    if self._current_pos == 0:
       if initial_state is None:
         raise ValueError("Random cache is empty and no initial state is given.")
-      self.random_cache.append(initial_state)
-      self.current_pos += 1
+      self._random_cache.append(initial_state)
+      self._current_pos += 1
 
-    for i in range(self.current_pos,64):
-      s0, s1 = self.random_cache[i-1]
+    for i in range(self._current_pos,64):
+      s0, s1 = self._random_cache[i-1]
       new_states = xorshift(s0, s1)
-      self.current_state = new_states
-      self.random_cache.append(new_states)
-      self.current_pos += 1
+      self._current_state = new_states
+      self._random_cache.append(new_states)
+      self._current_pos += 1
   
   # return the next random number and refill the cache if needed
   def _get_rand(self) -> tuple[int,int]:
-    if self.current_pos == 0:
-      self.fill_cache(initial_state=self.current_state)
+    if self._current_pos == 0:
+      self.fill_cache(initial_state=self._current_state)
     
-    self.current_pos -= 1
-    return self.random_cache.pop()
+    self._current_pos -= 1
+    return self._random_cache.pop()
   
   # return the next output from Math.random()
   def get_next(self, input_type: InputType, N: int = 0) -> Union[int,float]:
@@ -214,7 +214,7 @@ class RandomModel:
   
   # provide an input of at least 65 samples to initialize the Random Number model
   # if refill occurs on earlier samples, behavior may be incorrect (approximately 5/64 chance)
-  def input_samples(self, sample: list[Union[int,float]], input_type: InputType, N: int = 0):
+  def input_samples(self, sample: list[Union[int,float]], input_type: InputType, N: int = 0) -> tuple[int,int]:
     assert len(sample) >= 65, "Sample length must be at least 65 to gain necessary information"
 
     # binary search to find the find the point where cache refill occurs
@@ -257,3 +257,5 @@ class RandomModel:
     # step forward for all the remaining random numbers in our sample
     for r in range(high,len(sample)):
       _ = self._get_rand()
+
+    return (low,high)
