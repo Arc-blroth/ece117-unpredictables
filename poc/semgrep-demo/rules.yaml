@@ -1,0 +1,12 @@
+rules:
+  - id: example_rule
+    languages: 
+      - javascript
+    severity: WARNING
+    message:
+      Math.random() output displayed to user
+    pattern-sources:
+      - pattern: "Math.random(...)"
+    pattern-sinks:
+      - pattern: "console.log(...)"
+    mode: taint
