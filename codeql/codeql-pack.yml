@@ -1,0 +1,7 @@
+---
+library: false
+warnOnImplicitThis: false
+name: ece117-unpredictables
+version: 1.0.0
+dependencies:
+  codeql/javascript-all: ^2.1.0
