@@ -1,1 +1,2 @@
+pip3 install semgrep
 semgrep --config rules.yaml --include test.js
