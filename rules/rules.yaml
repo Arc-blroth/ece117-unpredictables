@@ -1,0 +1,23 @@
+rules:
+  - id: find_random
+    languages: 
+      - javascript
+    severity: WARNING
+    message:
+      Math.random() output displayed to user
+    pattern-sources:
+      - pattern: "Math.random(...)"
+    pattern-sinks:
+      - pattern: "() => ..."
+    mode: taint
+  - id: find_calls
+    languages: 
+      - javascript
+    severity: WARNING
+    message:
+      Math.random() output displayed to user
+    pattern-sources:
+      - pattern: "generateRandomNumber(...)"
+    pattern-sinks:
+      - pattern: "return new Response(...)"
+    mode: taint
