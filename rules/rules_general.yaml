@@ -1,0 +1,80 @@
+rules:
+  - id: find_random
+    languages:
+      - javascript
+    severity: WARNING
+    message: Math.random() output displayed to user
+    pattern-sources:
+      - pattern: "Math.random(...)"
+    pattern-sinks:
+      - pattern: |
+          console.log($X)
+      - pattern: |
+          alert($X)
+      - pattern: |
+          res.send($X)
+      - pattern: |
+          document.write($X)
+      - pattern: |
+          document.writeln($X)
+      - pattern: |
+          document.open($X)
+      - pattern: |
+          new Response(JSON.stringify($X), ...)
+      - pattern: |
+          new Response($X, ...)
+      - pattern: |
+          () => $X
+      - pattern: |
+          return $X
+      - pattern: |
+          throw $X
+      - pattern: |
+          process.stdout.write($X)
+      - pattern: |
+          eval($X)
+      - pattern: |
+          setTimeout($X, ...)
+      - pattern: |
+          setInterval($X, ...)
+    mode: taint
+
+  - id: find_calls
+    languages:
+      - javascript
+    severity: WARNING
+    message: Math.random() output displayed to user
+    pattern-sources:
+      - pattern: "$FUNC(...)"
+    pattern-sinks:
+      - pattern: |
+          console.log($X)
+      - pattern: |
+          alert($X)
+      - pattern: |
+          res.send($X)
+      - pattern: |
+          document.write($X)
+      - pattern: |
+          document.writeln($X)
+      - pattern: |
+          document.open($X)
+      - pattern: |
+          new Response(JSON.stringify($X), ...)
+      - pattern: |
+          new Response($X, ...)
+      - pattern: |
+          () => $X
+      - pattern: |
+          return $X
+      - pattern: |
+          throw $X
+      - pattern: |
+          process.stdout.write($X)
+      - pattern: |
+          eval($X)
+      - pattern: |
+          setTimeout($X, ...)
+      - pattern: |
+          setInterval($X, ...)
+    mode: taint
