@@ -2,7 +2,7 @@
  * @name Math.random finder
  * @kind problem
  * @problem.severity error
- * @id ece117-unpredictables/find-random
+ * @id arcblroth/ece117-unpredictables/find-random
  */
 
 import javascript
