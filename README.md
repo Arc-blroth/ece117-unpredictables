@@ -8,6 +8,8 @@ to predict future states of "randomness" in JS web apps!
 
 This repository contains several proof-of-concept scripts that demonstrate successful attacks against a demo web application at [https://ece117.bulr.boo/](https://ece117.bulr.boo/).
 
+Our report paper is [here](Predicting_the_Unpredictable_Cracking_Web_Randomness.pdf).
+
 ## Dependencies
 
 To run our proof of concept exploits, you will need to install the following 2 Python packages:
